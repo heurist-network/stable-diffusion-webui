@@ -4,7 +4,6 @@ import json
 import gradio as gr
 from modules.constants import model_names, samplers
 
-
 def load_config():
     with open("./config.json") as f:
         data = json.load(f)

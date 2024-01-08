@@ -1,6 +1,4 @@
-from modules.inference import pipe
 import re
-
 
 def remove_id_and_ext(text):
     text = re.sub(r'\[.*\]$', '', text)
@@ -10,16 +8,6 @@ def remove_id_and_ext(text):
     elif extension == "ckpt":
         text = text[:-4]
     return text
-
-
-models = pipe.constant("/sd/models")
-loras = pipe.constant("/sd/loras")
-samplers = pipe.constant("/sd/samplers")
-model_names = {}
-
-for model_name in models:
-    name_without_ext = remove_id_and_ext(model_name)
-    model_names[name_without_ext] = model_name
 
 css = """
 :root, .dark{
@@ -106,6 +94,12 @@ div.gradio-html.min{
 }
 #model_dd {
     width: 16%;
+}
+.gradio-gallery img {
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+    width: auto;
 }
 """
 
