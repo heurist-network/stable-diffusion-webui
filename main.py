@@ -142,7 +142,8 @@ def main():
     demo = create_ui()
     demo.queue(default_concurrency_limit=2)
     #demo.launch(share=True, show_api=False)
-    demo.launch(show_api=False)
+    #demo.launch(show_api=False)
+    demo.launch(share=False, server_name="0.0.0.0", server_port=80, show_api=False)
 
 if __name__ == "__main__":
     main()
