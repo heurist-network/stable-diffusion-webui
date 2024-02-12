@@ -1,6 +1,4 @@
 import os
-import re
-import html
 import json
 import gradio as gr
 from threading import Thread
@@ -15,6 +13,8 @@ import gradio as gr
 from modules.constants import css
 
 model_list_url = "https://raw.githubusercontent.com/heurist-network/heurist-models/main/models.json"
+
+load_dotenv()
 
 def fetch_model_list(url):
     response = requests.get(url)
@@ -47,12 +47,16 @@ def txt2img(prompt, neg_prompt, model_id, num_iterations, guidance_scale, width,
                 "seed": seed
             }
         },
-        "model_type": "SD",
         "model_id": model_id,
         "deadline": 30,
         "priority": 1
     }
-    response = requests.post("http://70.23.102.189:3030/submit_job", headers={"Content-Type": "application/json"}, data=json.dumps(data))
+    auth_key = os.environ.get('AUTH_KEY')
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {auth_key}"
+    }
+    response = requests.post("http://sequencer.heurist.xyz/submit_job", headers=headers, data=json.dumps(data))
     image_url = response.json()  
     return gr.update(value=[image_url])
 
@@ -137,7 +141,8 @@ def create_ui():
 def main():
     demo = create_ui()
     demo.queue(default_concurrency_limit=2)
-    demo.launch(share=True, show_api=False)
+    #demo.launch(share=True, show_api=False)
+    demo.launch(show_api=False)
 
 if __name__ == "__main__":
     main()
